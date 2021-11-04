@@ -23,7 +23,8 @@ const User = createConnection.define('users', {
     type: DataTypes.STRING(50)
   },
   password: {
-    type: DataTypes.STRING(255)
+    type: DataTypes.STRING(255),
+    scopes: ['self'],
   },
   status: {
     type: DataTypes.BOOLEAN,
@@ -41,5 +42,12 @@ const User = createConnection.define('users', {
   // Freeze Table Name
   freezeTableName: true
 });
- 
+
+User.prototype.toJSON =  function () {
+  var values = Object.assign({}, this.get());
+
+  delete values.password;
+  return values;
+}
+
 module.exports = User

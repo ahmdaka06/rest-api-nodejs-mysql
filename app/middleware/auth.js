@@ -55,16 +55,25 @@ const hasLogin = (req, res, next) => {
 }
 
 const requireAuth = (req, res, next) => {
-    const token = req.headers['authorization']
+    let header = req.headers['authorization'];
+    if (header) {
+        let token = header.split(' ');
+        let bearerToken = token[1];
 
-    if (token) {
-        jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+        if (token[0] !== 'Bearer') {
+            return res.status(401).json({
+                status: false,
+                error: 'Unauthorized!'
+            })
+        }
+        jwt.verify(bearerToken, process.env.JWT_SECRET, (err, decodedToken) => {
             if (err) {
                 return res.status(401).json({
                     status: false,
                     msg: 'Unauthorized!'
                 })
             } else {
+                req.user = decodedToken.secret
                 next()
             }
         })
@@ -74,6 +83,25 @@ const requireAuth = (req, res, next) => {
             msg: 'Unauthorized!'
         })
     }
+    // const token = req.headers['authorization']
+
+    // if (token) {
+    //     jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+    //         if (err) {
+    //             return res.status(401).json({
+    //                 status: false,
+    //                 msg: 'Unauthorized!'
+    //             })
+    //         } else {
+    //             next()
+    //         }
+    //     })
+    // } else {
+    //     return res.status(401).json({
+    //         status: false,
+    //         msg: 'Unauthorized!'
+    //     })
+    // }
 }
 
 const checkUser = (req, res, next) => {
