@@ -12,12 +12,12 @@ const User = createConnection.define('users', {
     primaryKey: true,
     autoIncrement: true
   },
+  name: {
+    type: DataTypes.STRING(100)
+  },
   email: {
     type: DataTypes.STRING(100),
     allowNull: true
-  },
-  name: {
-    type: DataTypes.STRING(100)
   },
   username: {
     type: DataTypes.STRING(50)

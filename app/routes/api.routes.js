@@ -1,17 +1,13 @@
 const express = require('express')
-require('express-group-routes');
+require('express-group-routes')
 const routes = express.Router()
 
 const {
-    hasLogin,
-    requireAuth,
-    checkUser,
-    isAdmin,
-    verifyToken
+    hasLogin
 } = require('../middleware/auth')
 
 // Controller
-const authController = require('../controllers/api/authController')
+const authController = require('../controllers/authController')
 
 routes.group('/api/v1', (routes) => {
     // routes.get('/', (req, res) => {

@@ -2,8 +2,9 @@
   "name": "rest-api-nodejs-mysql",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,6 +20,10 @@
     "jsonwebtoken": "^8.5.1",
     "md5": "^2.3.0",
     "mysql2": "^2.3.2",
-    "sequelize": "^6.8.0"
+    "sequelize": "^6.8.0",
+    "validatorjs": "^3.22.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14"
   }
 }

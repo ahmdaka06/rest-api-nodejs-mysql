@@ -45,7 +45,7 @@ const hasLogin = (req, res, next) => {
             if (!err) {
                 return res.status(201).json({
                     status: true,
-                    msg: 'You has login!'
+                    msg: 'Kamu sudah login'
                 })
             } else {
                 next()
@@ -82,7 +82,7 @@ const checkUser = (req, res, next) => {
     if (token) {
         jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
             if (err) {
-                res.locals.user = []
+                req.login = false
                 next()
             } else {
                 let user = await User.findById(decodedToken.secret.id)
@@ -92,47 +92,21 @@ const checkUser = (req, res, next) => {
                         msg: 'Unauthorized!'
                     })
                 } else {
-                    req.user = user
+                    req.login = user
                     next()
                 }
             }
         })
     } else {
-        req.user = []
+        req.login = false
         next()
     }
 }
 
-const isAdmin = (req, res, next) => {
-    const token = req.headers['authorization']
-
-    if (token) {
-        jwt.verify(token, process.env.JWT_SECRET, async (err, decodedToken) => {
-            if (err) {
-                res.locals.user = []
-                next()
-            } else {
-                let [user] = await User.findById(decodedToken.secret.id)
-                if (user.role === 'admin') {
-                    next()
-                } else {
-                    return res.status(403).json({
-                        status: false,
-                        msg: 'Not Access!'
-                    })
-                }
-            }
-        })
-    } else {
-        res.locals.user = []
-        next()
-    }
-}
 
 module.exports = {
     verifyToken,
     hasLogin,
     requireAuth,
-    checkUser,
-    isAdmin
+    checkUser
 }
