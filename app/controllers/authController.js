@@ -1,6 +1,7 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 const Hash = require('../config/bcrypt')
 const User = require('../models/User')
+const RefreshToken = require('../models/RefreshToken')
 const bcrypt = require('bcryptjs')
 const authRequest = require('./request/authRequest')
 
@@ -11,9 +12,20 @@ const generateTokenJWT = (secret) => {
     return jwt.sign({
         secret
     }, process.env.JWT_SECRET, {
-        expiresIn: maxAge
+        algorithm: process.env.JWT_ALGORITHM,
+        expiresIn: process.env.JWT_SECRET_LIFE,
+        
     });
 };
+// const refreshTokenJWT = (secret) => {
+//     return jwt.sign({
+//         secret
+//     }, process.env.JWT_REFRESH_SECRET, {
+//         algorithm: process.env.JWT_ALGORITHM,
+//         expiresIn: process.env.JWT_REFRESH_LIFE,
+        
+//     });
+// };
 
 module.exports = {
     
@@ -49,17 +61,25 @@ module.exports = {
                 msg: 'Username atau password tidak sesuai'
             }) 
         }
+
+        // Generate Refresh Token
+        let tokenJWTRefresh = await RefreshToken.createToken(user)
+
+        
         // Generate JWT Token
         let tokenJWT = generateTokenJWT({
             id: user.id,
-            username: user.username
+            username: user.username,
+            refreshToken: tokenJWTRefresh
         })
+        
 
         return res.status(200).json({
             status: true,
             msg: 'Login berhasil',
             data: {
-                accessToken: tokenJWT
+                accessToken: tokenJWT,
+                refreshToken: tokenJWTRefresh
             }
         }) 
     },

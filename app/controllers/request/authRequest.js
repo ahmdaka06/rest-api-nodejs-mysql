@@ -27,7 +27,7 @@ module.exports = {
         }
     },
 }
-
+//
 // const validate = async (req) => {
 //     let rules = {
 //         username: 'required',

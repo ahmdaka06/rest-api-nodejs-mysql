@@ -1,11 +1,12 @@
+const RefreshToken = require('./RefreshToken')
 const { Sequelize } = require('sequelize');
-const createConnection = require('./../config/db');
+const sequelize = require('./../config/db').sequelize;
  
 // init DataTypes
 const { DataTypes } = Sequelize;
  
 // Define schema
-const User = createConnection.define('users', {
+const User = sequelize.define('users', {
   // Define attributes
   id: {
     type: DataTypes.INTEGER,
@@ -48,6 +49,12 @@ User.prototype.toJSON =  function () {
 
   delete values.password;
   return values;
+}
+
+User.associate = models => {
+  User.hasMany(RefreshToken, {
+    foreignKey: 'user_id'
+  });
 }
 
 module.exports = User
