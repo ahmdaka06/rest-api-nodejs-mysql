@@ -44,7 +44,7 @@ const hasLogin = (req, res, next) => {
         jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
             if (!err) {
                 return res.status(201).json({
-                    status: true,
+                    status: false,
                     msg: 'Kamu sudah login'
                 })
             } else {
@@ -73,7 +73,7 @@ const requireAuth = (req, res, next) => {
                     msg: 'Unauthorized!'
                 })
             } else {
-                req.user = decodedToken.secret
+                req.user = decodedToken
                 next()
             }
         })

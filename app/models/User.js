@@ -1,4 +1,3 @@
-const RefreshToken = require('./RefreshToken')
 const { Sequelize } = require('sequelize');
 const sequelize = require('./../config/db').sequelize;
  
@@ -49,12 +48,6 @@ User.prototype.toJSON =  function () {
 
   delete values.password;
   return values;
-}
-
-User.associate = models => {
-  User.hasMany(RefreshToken, {
-    foreignKey: 'user_id'
-  });
 }
 
 module.exports = User
