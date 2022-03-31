@@ -2,39 +2,6 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/User')
 require('dotenv').config()
 
-// const getToken = (req) => {
-//     return req.cookies.synteticJWT
-// }
-
-const verifyToken = (req, res, next) => {
-    let header = req.headers['authorization'];
-    if (header) {
-        let token = header.split(' ');
-        let bearerToken = token[1];
-
-        if (token[0] !== 'Bearer') {
-            return res.status(401).json({
-                status: false,
-                error: "Api Key Invalid!"
-            })
-        }
-        User.findByToken(bearerToken).then(([result]) => {
-            req.user = result;
-            next();
-        }).catch(err => {
-            return res.status(401).json({
-                status: false,
-                error: "Api Key Invalid!"
-            })
-        })
-    } else {
-        return res.status(403).json({
-            status: false,
-            error: 'No credentials sent!'
-        });
-    }
-}
-
 const hasLogin = (req, res, next) => {
     let token = req.headers['authorization'];
 
