@@ -100,7 +100,6 @@ const checkUser = (req, res, next) => {
 
 
 module.exports = {
-    verifyToken,
     hasLogin,
     requireAuth,
     checkUser
