@@ -12,14 +12,14 @@ const authController = require('../controllers/authController')
 const userController = require('../controllers/userController')
 
 routes.group('/api/v1', (routes) => {
-    // routes.get('/', (req, res) => {
-    //     res.status(200).json({
-    //         status: true,
-    //         data: {
-    //             message: 'Selamat datang di base api v1'
-    //         }
-    //     })
-    // })
+    routes.get('/', (req, res) => {
+        res.status(200).json({
+            status: true,
+            data: {
+                message: 'Selamat datang di base api v1'
+            }
+        })
+    })
     
     // ROUTE AUTH
     routes.group('/auth', (routes) => {
